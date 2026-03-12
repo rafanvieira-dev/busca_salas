@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Localizador de Salas - Arquivologia UNIRIO 2026.1</title>
+    <style>
+        :root {
+            --unirio-blue: #0A3254; /* Azul marinho institucional */
+            --unirio-gold: #D4A017; /* Dourado/Amarelo institucional */
+            --bg-color: #f4f6f8;
+            --card-bg: #ffffff;
+            --text-color: #333;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Cabeçalho estilo portal institucional */
+        header {
+            background-color: var(--unirio-blue);
+            color: white;
+            padding: 20px 0;
+            border-bottom: 5px solid var(--unirio-gold);
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8em;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            margin: 5px 0 0 0;
+            font-size: 1em;
+            color: #e0e0e0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        /* Caixa de busca */
+        .search-box {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-top: 4px solid var(--unirio-gold);
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ccd1d9;
+            border-radius: 4px;
+            font-size: 16px;
+            min-width: 200px;
+            transition: border-color 0.3s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--unirio-blue);
+            box-shadow: 0 0 5px rgba(10, 50, 84, 0.2);
+        }
+
+        /* Sessão de Períodos */
+        .periodo-section {
+            background-color: var(--card-bg);
+            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid #e6e9ed;
+        }
+
+        .periodo-title {
+            color: var(--unirio-blue);
+            border-bottom: 2px solid var(--unirio-gold);
+            padding-bottom: 8px;
+            margin-top: 0;
+            font-size: 1.4em;
+            text-transform: uppercase;
+        }
+
+        /* Dias da Semana */
+        .dia-section {
+            margin-top: 20px;
+        }
+
+        .dia-title {
+            font-weight: bold;
+            color: white;
+            background-color: var(--unirio-blue);
+            padding: 6px 15px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+            text-transform: uppercase;
+        }
+
+        /* Cards das Disciplinas */
+        .card {
+            border-left: 5px solid var(--unirio-gold);
+            background-color: #fcfcfc;
+            padding: 15px 20px;
+            margin-bottom: 12px;
+            border-radius: 0 4px 4px 0;
+            border-top: 1px solid #eee;
+            border-right: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .card strong {
+            display: block;
+            font-size: 1.15em;
+            color: var(--unirio-blue);
+            margin-bottom: 8px;
+        }
+
+        .card span {
+            display: block;
+            color: #555;
+            margin-bottom: 4px;
+            font-size: 0.95em;
+        }
+
+        .sala-destaque {
+            font-weight: bold;
+            color: #d9534f; /* Vermelho para chamar atenção para a sala */
+            background-color: #fdf2f2;
+            padding: 2px 6px;
+            border-radius: 3px;
+            border: 1px solid #f5caca;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 30px;
+            font-size: 1.1em;
+            color: #666;
+            background-color: var(--card-bg);
+            border-radius: 4px;
+            border-top: 4px solid #d9534f;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Universidade Federal do Estado do Rio de Janeiro</h1>
+    <p>Localizador de Salas - Arquivologia 2026.1</p>
+</header>
+
+<div class="container">    
+    <div class="search-box">
+        <input type="text" id="buscaMateria" placeholder="🔍 Buscar disciplina..." onkeyup="filtrarSalas()">
+        <input type="text" id="buscaProfessor" placeholder="👤 Buscar professor(a)..." onkeyup="filtrarSalas()">
+    </div>
+
+    <div id="resultados"></div>
+</div>
+
+<script>
+    // Base de dados extraída do PDF [cite: 1, 2]
+    const disciplinas = [
+        // PRIMEIRO PERÍODO [cite: 1]
+        { periodo: "1º Período", materia: "Introdução a Arquivologia", dia: "Segunda-feira", professor: "Eliezer Pires", sala: "CCH-313", horario: "18:00 - 22:00" },
+        { periodo: "1º Período", materia: "Construção do Pensamento Arquivístico", dia: "Terça-feira", professor: "João Marcus", sala: "CCH-313", horario: "18:00 - 22:00" },
+        { periodo: "1º Período", materia: "Cultura História e Documento", dia: "Quarta-feira", professor: "Thayz Merolla Piubel", sala: "CCH-202", horario: "18:00 - 22:00" },
+        { periodo: "1º Período", materia: "Ética Profissional Arquivística", dia: "Quarta-feira", professor: "Flávio Leal", sala: "CCH-313", horario: "18:00 - 20:00" },
+        { periodo: "1º Período", materia: "Memória, Cultura e Sociedade", dia: "Quarta-feira", professor: "Igor Gak", sala: "CCH-206", horario: "18:00 - 22:00" },
+        { periodo: "1º Período", materia: "Metodologia da Pesquisa Arquivística", dia: "Sexta-feira", professor: "Priscila Gomes", sala: "CCH-313", horario: "18:00 - 22:00" },
+        
+        // SEGUNDO PERÍODO [cite: 1]
+        { periodo: "2º Período", materia: "Introdução à Sociologia", dia: "Segunda-feira", professor: "Terezinha Souza", sala: "CCH-212", horario: "18:00 - 22:00" },
+        { periodo: "2º Período", materia: "Informação, Memória e Documento", dia: "Segunda-feira", professor: "Bianca Rihan", sala: "PPGMS1", horario: "18:00 - 21:00" },
+        { periodo: "2º Período", materia: "Administração I", dia: "Terça-feira", professor: "Ricardo Bezerra", sala: "CCH-315", horario: "18:00 - 22:00" },
+        { periodo: "2º Período", materia: "Arquivologia e Ciência da Informação", dia: "Terça-feira", professor: "Rosale de Mattos", sala: "ENF-302", horario: "18:00 - 22:00" },
+        { periodo: "2º Período", materia: "Usos e Usuários da Informação Arquivística", dia: "Quarta-feira", professor: "Renato Crivelli", sala: "ENF-307", horario: "18:00 - 22:00" },
+        { periodo: "2º Período", materia: "Metodologia Científica", dia: "Quinta-feira", professor: "Sérgio Silva", sala: "CCH-212", horario: "18:00 - 22:00" },
+        { periodo: "2º Período", materia: "Gestão da Informação Arquivística", dia: "Quinta-feira", professor: "Marcelo Siqueira", sala: "CCH-204", horario: "18:00 - 22:00" },
+        { periodo: "2º Período", materia: "Organização do Conhecimento I", dia: "Sexta-feira", professor: "Tatiana de Almeida", sala: "RU-302", horario: "18:00 - 22:00" },
+
+        // TERCEIRO PERÍODO [cite: 1]
+        { periodo: "3º Período", materia: "Avaliação de Documentos Arquivísticos", dia: "Segunda-feira", professor: "Mariana Lousada", sala: "ENF-404", horario: "18:00 - 22:00" },
+        { periodo: "3º Período", materia: "Seminário de Arquivística I C (Arquivos Fluminenses)", dia: "Terça-feira", professor: "Eliezer Pires", sala: "PET-3º ANDAR/CCH", horario: "18:00 - 20:00" },
+        { periodo: "3º Período", materia: "Seminário de Arquivística II C (Instrumentos de Pesquisa)", dia: "Terça-feira", professor: "Eliezer Pires", sala: "PET-3º ANDAR/CCH", horario: "20:00 - 22:00" },
+        { periodo: "3º Período", materia: "Classificação de Documentos Arquivísticos", dia: "Terça-feira", professor: "Fernanda Monteiro", sala: "RU-307", horario: "18:00 - 22:00" },
+        { periodo: "3º Período", materia: "Seminário de Arquivística IA (Introdução Arquivos e Educação)", dia: "Quinta-feira", professor: "Priscila Gomes", sala: "CCH-213", horario: "18:00 - 20:00" },
+        { periodo: "3º Período", materia: "Seminário de Arquivística II A (Arquivos Escolares)", dia: "Quinta-feira", professor: "Priscila Gomes", sala: "CCH-213", horario: "20:00 - 22:00" },
+
+        // QUARTO PERÍODO [cite: 1, 2]
+        { periodo: "4º Período", materia: "Arranjo e Descrição de Documentos", dia: "Segunda-feira", professor: "Jair Martins", sala: "CCH-312", horario: "18:00 - 22:00" },
+        { periodo: "4º Período", materia: "Diplomática", dia: "Terça-feira", professor: "Danilo Bueno", sala: "CCH-314", horario: "18:00 - 22:00" },
+        { periodo: "4º Período", materia: "Gestão de Processos", dia: "Quarta-feira", professor: "Antonio Andrade", sala: "PJA-203", horario: "18:00 - 22:00" },
+        { periodo: "4º Período", materia: "Análise da Informação", dia: "Quarta-feira", professor: "Geni Chaves", sala: "CCH-213", horario: "18:00 - 22:00" },
+        { periodo: "4º Período", materia: "Tecnol de Reprodução e Armazenamento de Docs.", dia: "Quarta-feira", professor: "Durval Pereira", sala: "CCH-204", horario: "18:00 - 22:00" },
+        { periodo: "4º Período", materia: "Administração II", dia: "Quinta-feira", professor: "Ricardo Bezerra", sala: "ENF-410", horario: "18:00 - 22:00" },
+        { periodo: "4º Período", materia: "Conservação Preventiva de Documentos", dia: "Quinta-feira", professor: "Bruno Leite", sala: "PDA", horario: "18:00 - 22:00" },
+        { periodo: "4º Período", materia: "Arquivos Médicos", dia: "Sexta-feira", professor: "Brenda Rocco", sala: "ENF-302", horario: "18:00 - 22:00" },
+        { periodo: "4º Período", materia: "Estágio Supervisionado I", dia: "Sexta-feira", professor: "Fernanda Monteiro", sala: "REMOTA", horario: "17:00 - 18:00" },
+
+        // QUINTO PERÍODO [cite: 2]
+        { periodo: "5º Período", materia: "Informática Aplica à Arquivística", dia: "Segunda-feira", professor: "Brenda Rocco", sala: "PDA", horario: "18:00 - 22:00" },
+        { periodo: "5º Período", materia: "Pesquisa em Arquivística", dia: "Terça-feira", professor: "Bruno Leite", sala: "PDA", horario: "18:00 - 22:00" },
+        { periodo: "5º Período", materia: "História do Brasil Contemporâneo", dia: "Quarta-feira", professor: "Maria Pires", sala: "CCH-307", horario: "18:00 - 22:00" },
+        { periodo: "5º Período", materia: "Fundamentos de Inglês Instrumental", dia: "Sexta-feira", professor: "Marcello Pinto", sala: "CCH-205", horario: "18:00 - 22:00" },
+        { periodo: "5º Período", materia: "Estágio Supervisionado II", dia: "Sexta-feira", professor: "Flávio Leal", sala: "REMOTA", horario: "17:00 - 18:00" },
+
+        // SEXTO PERÍODO [cite: 2]
+        { periodo: "6º Período", materia: "Gestão de Documentos Arquivísticos", dia: "Segunda-feira", professor: "Danilo Bueno", sala: "CCH-202", horario: "18:00 - 22:00" },
+        { periodo: "6º Período", materia: "Comunicação", dia: "Terça-feira", professor: "Luciana Souza", sala: "CCH-211", horario: "18:00 - 22:00" },
+        { periodo: "6º Período", materia: "Gestão Arquivística de Documentos Eletrônicos", dia: "Terça-feira", professor: "Brenda Rocco", sala: "REMOTA", horario: "18:00 - 22:00" },
+        { periodo: "6º Período", materia: "Documentação Audiovisual e Digital", dia: "Quarta-feira", professor: "Marcelo Siqueira", sala: "PDA", horario: "18:00 - 22:00" },
+        { periodo: "6º Período", materia: "Trabalho de Conclusão de Curso I", dia: "Quarta-feira", professor: "João Marcus", sala: "RU-305", horario: "18:00 - 22:00" },
+        { periodo: "6º Período", materia: "Tecnologia da Informação e Processos de Automação", dia: "Quinta-feira", professor: "Claudio Ribeiro", sala: "LADOC", horario: "18:00 - 22:00" },
+        { periodo: "6º Período", materia: "Estágio Supervisionado III", dia: "Sexta-feira", professor: "Renato Crivelli", sala: "REMOTA", horario: "17:00 - 18:00" },
+
+        // SÉTIMO PERÍODO [cite: 2]
+        { periodo: "7º Período", materia: "Técnicas de Recuperação e Disseminação da Informação", dia: "Segunda-feira", professor: "Simone Alencar", sala: "CCH-213", horario: "18:00 - 22:00" },
+        { periodo: "7º Período", materia: "Organização Prática de Arquivos-A", dia: "Terça-feira", professor: "Jair Martins", sala: "ENF-410", horario: "18:00 - 22:00" },
+        { periodo: "7º Período", materia: "Gestão de Serviços Arquivísticos", dia: "Quinta-feira", professor: "Fernanda Monteiro", sala: "CCH-308", horario: "18:00 - 22:00" },
+        { periodo: "7º Período", materia: "Trabalho de Conclusão de Curso II", dia: "Sexta-feira", professor: "Igor Gak", sala: "REMOTA", horario: "16:00 - 17:00" },
+
+        // OITAVO PERÍODO [cite: 2]
+        { periodo: "8º Período", materia: "Educação Ambiental e Cidadania", dia: "Terça-feira", professor: "Ana Cláudia Delciellos", sala: "202N", horario: "18:00 - 21:00" },
+        { periodo: "8º Período", materia: "Gestão de Instituições Arquivísticas", dia: "Quinta-feira", professor: "Renato Crivelli", sala: "ARQUIVO CENTRAL", horario: "18:00 - 22:00" },
+        { periodo: "8º Período", materia: "Políticas de Acesso à Informação Arquivística", dia: "Sexta-feira", professor: "Rosale de Mattos", sala: "CCH-203", horario: "18:00 - 22:00" }
+    ];
+
+    const ordemDias = {
+        "Segunda-feira": 1,
+        "Terça-feira": 2,
+        "Quarta-feira": 3,
+        "Quinta-feira": 4,
+        "Sexta-feira": 5
+    };
+
+    function normalizarTexto(texto) {
+        return texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function renderizarResultados(dados) {
+        const container = document.getElementById('resultados');
+        container.innerHTML = '';
+
+        if (dados.length === 0) {
+            container.innerHTML = '<div class="no-results">Nenhuma disciplina ou sala encontrada para a sua busca. Tente revisar os termos informados.</div>';
+            return;
+        }
+
+        // Agrupar por período
+        const agrupadoPorPeriodo = dados.reduce((acc, curr) => {
+            if (!acc[curr.periodo]) acc[curr.periodo] = [];
+            acc[curr.periodo].push(curr);
+            return acc;
+        }, {});
+
+        // Gerar HTML iterando sobre os períodos e dias
+        for (const [periodo, materias] of Object.entries(agrupadoPorPeriodo)) {
+            
+            // Agrupar e ordenar por dia da semana dentro do período
+            const agrupadoPorDia = materias.reduce((acc, curr) => {
+                if (!acc[curr.dia]) acc[curr.dia] = [];
+                acc[curr.dia].push(curr);
+                return acc;
+            }, {});
+
+            const diasOrdenados = Object.keys(agrupadoPorDia).sort((a, b) => ordemDias[a] - ordemDias[b]);
+
+            let htmlPeriodo = `<div class="periodo-section">
+                                <h2 class="periodo-title">${periodo}</h2>`;
+
+            diasOrdenados.forEach(dia => {
+                htmlPeriodo += `<div class="dia-section">
+                                    <div class="dia-title">${dia}</div>`;
+                
+                agrupadoPorDia[dia].forEach(item => {
+                    htmlPeriodo += `
+                        <div class="card">
+                            <strong>${item.materia}</strong>
+                            <span>🎓 Professor(a): ${item.professor}</span>
+                            <span>⏰ Horário: ${item.horario}</span>
+                            <span>📍 Sala: <span class="sala-destaque">${item.sala}</span></span>
+                        </div>
+                    `;
+                });
+                htmlPeriodo += `</div>`;
+            });
+
+            htmlPeriodo += `</div>`;
+            container.innerHTML += htmlPeriodo;
+        }
+    }
+
+    function filtrarSalas() {
+        const termoMateria = normalizarTexto(document.getElementById('buscaMateria').value);
+        const termoProfessor = normalizarTexto(document.getElementById('buscaProfessor').value);
+
+        const resultadosFiltrados = disciplinas.filter(d => {
+            const matchMateria = normalizarTexto(d.materia).includes(termoMateria);
+            const matchProfessor = normalizarTexto(d.professor).includes(termoProfessor);
+            return matchMateria && matchProfessor;
+        });
+
+        renderizarResultados(resultadosFiltrados);
+    }
+
+    // Renderizar tudo inicialmente
+    renderizarResultados(disciplinas);
+
+</script>
+</body>
+</html>
