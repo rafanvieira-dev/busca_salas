@@ -148,21 +148,29 @@
 
         .sala-destaque {
             font-weight: bold;
-            color: #d9534f; /* Vermelho para chamar atenção para a sala */
+            color: #d9534f;
             background-color: #fdf2f2;
             padding: 2px 6px;
             border-radius: 3px;
             border: 1px solid #f5caca;
         }
 
-        .no-results {
+        .message-box {
             text-align: center;
             padding: 30px;
             font-size: 1.1em;
             color: #666;
             background-color: var(--card-bg);
             border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .message-box.error {
             border-top: 4px solid #d9534f;
+        }
+
+        .message-box.info {
+            border-top: 4px solid var(--unirio-blue);
         }
     </style>
 </head>
@@ -185,7 +193,7 @@
 <script>
     // Base de dados extraída do PDF [cite: 1, 2]
     const disciplinas = [
-        // PRIMEIRO PERÍODO [cite: 1]
+        // PRIMEIRO PERÍODO
         { periodo: "1º Período", materia: "Introdução a Arquivologia", dia: "Segunda-feira", professor: "Eliezer Pires", sala: "CCH-313", horario: "18:00 - 22:00" },
         { periodo: "1º Período", materia: "Construção do Pensamento Arquivístico", dia: "Terça-feira", professor: "João Marcus", sala: "CCH-313", horario: "18:00 - 22:00" },
         { periodo: "1º Período", materia: "Cultura História e Documento", dia: "Quarta-feira", professor: "Thayz Merolla Piubel", sala: "CCH-202", horario: "18:00 - 22:00" },
@@ -193,7 +201,7 @@
         { periodo: "1º Período", materia: "Memória, Cultura e Sociedade", dia: "Quarta-feira", professor: "Igor Gak", sala: "CCH-206", horario: "18:00 - 22:00" },
         { periodo: "1º Período", materia: "Metodologia da Pesquisa Arquivística", dia: "Sexta-feira", professor: "Priscila Gomes", sala: "CCH-313", horario: "18:00 - 22:00" },
         
-        // SEGUNDO PERÍODO [cite: 1]
+        // SEGUNDO PERÍODO
         { periodo: "2º Período", materia: "Introdução à Sociologia", dia: "Segunda-feira", professor: "Terezinha Souza", sala: "CCH-212", horario: "18:00 - 22:00" },
         { periodo: "2º Período", materia: "Informação, Memória e Documento", dia: "Segunda-feira", professor: "Bianca Rihan", sala: "PPGMS1", horario: "18:00 - 21:00" },
         { periodo: "2º Período", materia: "Administração I", dia: "Terça-feira", professor: "Ricardo Bezerra", sala: "CCH-315", horario: "18:00 - 22:00" },
@@ -203,7 +211,7 @@
         { periodo: "2º Período", materia: "Gestão da Informação Arquivística", dia: "Quinta-feira", professor: "Marcelo Siqueira", sala: "CCH-204", horario: "18:00 - 22:00" },
         { periodo: "2º Período", materia: "Organização do Conhecimento I", dia: "Sexta-feira", professor: "Tatiana de Almeida", sala: "RU-302", horario: "18:00 - 22:00" },
 
-        // TERCEIRO PERÍODO [cite: 1]
+        // TERCEIRO PERÍODO
         { periodo: "3º Período", materia: "Avaliação de Documentos Arquivísticos", dia: "Segunda-feira", professor: "Mariana Lousada", sala: "ENF-404", horario: "18:00 - 22:00" },
         { periodo: "3º Período", materia: "Seminário de Arquivística I C (Arquivos Fluminenses)", dia: "Terça-feira", professor: "Eliezer Pires", sala: "PET-3º ANDAR/CCH", horario: "18:00 - 20:00" },
         { periodo: "3º Período", materia: "Seminário de Arquivística II C (Instrumentos de Pesquisa)", dia: "Terça-feira", professor: "Eliezer Pires", sala: "PET-3º ANDAR/CCH", horario: "20:00 - 22:00" },
@@ -211,7 +219,7 @@
         { periodo: "3º Período", materia: "Seminário de Arquivística IA (Introdução Arquivos e Educação)", dia: "Quinta-feira", professor: "Priscila Gomes", sala: "CCH-213", horario: "18:00 - 20:00" },
         { periodo: "3º Período", materia: "Seminário de Arquivística II A (Arquivos Escolares)", dia: "Quinta-feira", professor: "Priscila Gomes", sala: "CCH-213", horario: "20:00 - 22:00" },
 
-        // QUARTO PERÍODO [cite: 1, 2]
+        // QUARTO PERÍODO
         { periodo: "4º Período", materia: "Arranjo e Descrição de Documentos", dia: "Segunda-feira", professor: "Jair Martins", sala: "CCH-312", horario: "18:00 - 22:00" },
         { periodo: "4º Período", materia: "Diplomática", dia: "Terça-feira", professor: "Danilo Bueno", sala: "CCH-314", horario: "18:00 - 22:00" },
         { periodo: "4º Período", materia: "Gestão de Processos", dia: "Quarta-feira", professor: "Antonio Andrade", sala: "PJA-203", horario: "18:00 - 22:00" },
@@ -222,14 +230,14 @@
         { periodo: "4º Período", materia: "Arquivos Médicos", dia: "Sexta-feira", professor: "Brenda Rocco", sala: "ENF-302", horario: "18:00 - 22:00" },
         { periodo: "4º Período", materia: "Estágio Supervisionado I", dia: "Sexta-feira", professor: "Fernanda Monteiro", sala: "REMOTA", horario: "17:00 - 18:00" },
 
-        // QUINTO PERÍODO [cite: 2]
+        // QUINTO PERÍODO
         { periodo: "5º Período", materia: "Informática Aplica à Arquivística", dia: "Segunda-feira", professor: "Brenda Rocco", sala: "PDA", horario: "18:00 - 22:00" },
         { periodo: "5º Período", materia: "Pesquisa em Arquivística", dia: "Terça-feira", professor: "Bruno Leite", sala: "PDA", horario: "18:00 - 22:00" },
         { periodo: "5º Período", materia: "História do Brasil Contemporâneo", dia: "Quarta-feira", professor: "Maria Pires", sala: "CCH-307", horario: "18:00 - 22:00" },
         { periodo: "5º Período", materia: "Fundamentos de Inglês Instrumental", dia: "Sexta-feira", professor: "Marcello Pinto", sala: "CCH-205", horario: "18:00 - 22:00" },
         { periodo: "5º Período", materia: "Estágio Supervisionado II", dia: "Sexta-feira", professor: "Flávio Leal", sala: "REMOTA", horario: "17:00 - 18:00" },
 
-        // SEXTO PERÍODO [cite: 2]
+        // SEXTO PERÍODO
         { periodo: "6º Período", materia: "Gestão de Documentos Arquivísticos", dia: "Segunda-feira", professor: "Danilo Bueno", sala: "CCH-202", horario: "18:00 - 22:00" },
         { periodo: "6º Período", materia: "Comunicação", dia: "Terça-feira", professor: "Luciana Souza", sala: "CCH-211", horario: "18:00 - 22:00" },
         { periodo: "6º Período", materia: "Gestão Arquivística de Documentos Eletrônicos", dia: "Terça-feira", professor: "Brenda Rocco", sala: "REMOTA", horario: "18:00 - 22:00" },
@@ -238,13 +246,13 @@
         { periodo: "6º Período", materia: "Tecnologia da Informação e Processos de Automação", dia: "Quinta-feira", professor: "Claudio Ribeiro", sala: "LADOC", horario: "18:00 - 22:00" },
         { periodo: "6º Período", materia: "Estágio Supervisionado III", dia: "Sexta-feira", professor: "Renato Crivelli", sala: "REMOTA", horario: "17:00 - 18:00" },
 
-        // SÉTIMO PERÍODO [cite: 2]
+        // SÉTIMO PERÍODO
         { periodo: "7º Período", materia: "Técnicas de Recuperação e Disseminação da Informação", dia: "Segunda-feira", professor: "Simone Alencar", sala: "CCH-213", horario: "18:00 - 22:00" },
         { periodo: "7º Período", materia: "Organização Prática de Arquivos-A", dia: "Terça-feira", professor: "Jair Martins", sala: "ENF-410", horario: "18:00 - 22:00" },
         { periodo: "7º Período", materia: "Gestão de Serviços Arquivísticos", dia: "Quinta-feira", professor: "Fernanda Monteiro", sala: "CCH-308", horario: "18:00 - 22:00" },
         { periodo: "7º Período", materia: "Trabalho de Conclusão de Curso II", dia: "Sexta-feira", professor: "Igor Gak", sala: "REMOTA", horario: "16:00 - 17:00" },
 
-        // OITAVO PERÍODO [cite: 2]
+        // OITAVO PERÍODO
         { periodo: "8º Período", materia: "Educação Ambiental e Cidadania", dia: "Terça-feira", professor: "Ana Cláudia Delciellos", sala: "202N", horario: "18:00 - 21:00" },
         { periodo: "8º Período", materia: "Gestão de Instituições Arquivísticas", dia: "Quinta-feira", professor: "Renato Crivelli", sala: "ARQUIVO CENTRAL", horario: "18:00 - 22:00" },
         { periodo: "8º Período", materia: "Políticas de Acesso à Informação Arquivística", dia: "Sexta-feira", professor: "Rosale de Mattos", sala: "CCH-203", horario: "18:00 - 22:00" }
@@ -265,11 +273,6 @@
     function renderizarResultados(dados) {
         const container = document.getElementById('resultados');
         container.innerHTML = '';
-
-        if (dados.length === 0) {
-            container.innerHTML = '<div class="no-results">Nenhuma disciplina ou sala encontrada para a sua busca. Tente revisar os termos informados.</div>';
-            return;
-        }
 
         // Agrupar por período
         const agrupadoPorPeriodo = dados.reduce((acc, curr) => {
@@ -318,6 +321,13 @@
     function filtrarSalas() {
         const termoMateria = normalizarTexto(document.getElementById('buscaMateria').value);
         const termoProfessor = normalizarTexto(document.getElementById('buscaProfessor').value);
+        const container = document.getElementById('resultados');
+
+        // Se ambos os campos estiverem vazios, mostra mensagem inicial e interrompe
+        if (termoMateria === "" && termoProfessor === "") {
+            container.innerHTML = '<div class="message-box info">Digite o nome da disciplina ou professor(a) acima para visualizar as salas.</div>';
+            return;
+        }
 
         const resultadosFiltrados = disciplinas.filter(d => {
             const matchMateria = normalizarTexto(d.materia).includes(termoMateria);
@@ -325,11 +335,17 @@
             return matchMateria && matchProfessor;
         });
 
+        // Se buscou algo mas não encontrou nada
+        if (resultadosFiltrados.length === 0) {
+            container.innerHTML = '<div class="message-box error">Nenhuma disciplina ou sala encontrada. Tente revisar os termos informados.</div>';
+            return;
+        }
+
         renderizarResultados(resultadosFiltrados);
     }
 
-    // Renderizar tudo inicialmente
-    renderizarResultados(disciplinas);
+    // Chama a função logo que a página carrega para exibir o estado inicial (vazio com mensagem)
+    filtrarSalas();
 
 </script>
 </body>
