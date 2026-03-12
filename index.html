@@ -21,10 +21,10 @@
             padding: 0;
             display: flex;
             flex-direction: column;
-            min-height: 100vh; /* Garante que o rodapé fique no fundo */
+            min-height: 100vh;
         }
 
-        /* Cabeçalho estilo portal institucional */
+        /* Cabeçalho */
         header {
             background-color: var(--unirio-blue);
             color: white;
@@ -47,7 +47,7 @@
         }
 
         .container {
-            flex: 1; /* Faz o conteúdo crescer e empurrar o rodapé para baixo */
+            flex: 1;
             width: 100%;
             max-width: 900px;
             margin: 30px auto;
@@ -147,7 +147,7 @@
             border-left: 5px solid var(--unirio-gold);
             background-color: #fcfcfc;
             padding: 15px 20px;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
             border-radius: 0 4px 4px 0;
             border-top: 1px solid #eee;
             border-right: 1px solid #eee;
@@ -160,18 +160,53 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
         .card strong {
-            display: block;
             font-size: 1.15em;
             color: var(--unirio-blue);
-            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        /* Badges (Etiquetas de Tipo) */
+        .badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: bold;
+            color: white;
+            white-space: nowrap;
+            text-transform: uppercase;
+        }
+
+        .badge-obrigatoria {
+            background-color: #d9534f; /* Vermelho */
+        }
+
+        .badge-optativa {
+            background-color: #5cb85c; /* Verde */
         }
 
         .card span {
             display: block;
             color: #555;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             font-size: 0.95em;
+        }
+
+        .card a {
+            color: var(--unirio-blue);
+            text-decoration: none;
+        }
+
+        .card a:hover {
+            text-decoration: underline;
         }
 
         .sala-destaque {
@@ -222,11 +257,17 @@
             margin-top: 10px;
         }
 
-        /* Ajuste para telas pequenas (celular) */
+        /* Ajuste para telas pequenas */
         @media (max-width: 600px) {
             .btn-limpar {
                 width: 100%;
                 justify-content: center;
+            }
+            .card-header {
+                flex-direction: column;
+            }
+            .badge {
+                margin-top: 5px;
             }
         }
     </style>
@@ -255,71 +296,71 @@
 </footer>
 
 <script>
-    // Base de dados extraída do PDF
+    // Base de dados extraída do PDF com Tipo e E-mail adicionados
     const disciplinas = [
         // PRIMEIRO PERÍODO
-        { periodo: "1º Período", materia: "Introdução a Arquivologia", dia: "Segunda-feira", professor: "Eliezer Pires", sala: "CCH-313", horario: "18:00 - 22:00" },
-        { periodo: "1º Período", materia: "Construção do Pensamento Arquivístico", dia: "Terça-feira", professor: "João Marcus", sala: "CCH-313", horario: "18:00 - 22:00" },
-        { periodo: "1º Período", materia: "Cultura História e Documento", dia: "Quarta-feira", professor: "Thayz Merolla Piubel", sala: "CCH-202", horario: "18:00 - 22:00" },
-        { periodo: "1º Período", materia: "Ética Profissional Arquivística", dia: "Quarta-feira", professor: "Flávio Leal", sala: "CCH-313", horario: "18:00 - 20:00" },
-        { periodo: "1º Período", materia: "Memória, Cultura e Sociedade", dia: "Quarta-feira", professor: "Igor Gak", sala: "CCH-206", horario: "18:00 - 22:00" },
-        { periodo: "1º Período", materia: "Metodologia da Pesquisa Arquivística", dia: "Sexta-feira", professor: "Priscila Gomes", sala: "CCH-313", horario: "18:00 - 22:00" },
+        { periodo: "1º Período", materia: "Introdução a Arquivologia", dia: "Segunda-feira", professor: "Eliezer Pires", email: "eliezer.silva@unirio.br", tipo: "Obrigatória", sala: "CCH-313", horario: "18:00 - 22:00" },
+        { periodo: "1º Período", materia: "Construção do Pensamento Arquivístico", dia: "Terça-feira", professor: "João Marcus", email: "joao.m.assis@unirio.br", tipo: "Obrigatória", sala: "CCH-313", horario: "18:00 - 22:00" },
+        { periodo: "1º Período", materia: "Cultura História e Documento", dia: "Quarta-feira", professor: "Thayz Merolla Piubel", email: "thays.piubel@unirio.br", tipo: "Optativa", sala: "CCH-202", horario: "18:00 - 22:00" },
+        { periodo: "1º Período", materia: "Ética Profissional Arquivística", dia: "Quarta-feira", professor: "Flávio Leal", email: "fleal@unirio.br", tipo: "Optativa", sala: "CCH-313", horario: "18:00 - 20:00" },
+        { periodo: "1º Período", materia: "Memória, Cultura e Sociedade", dia: "Quarta-feira", professor: "Igor Gak", email: "igor.gak@unirio.br", tipo: "Optativa", sala: "CCH-206", horario: "18:00 - 22:00" },
+        { periodo: "1º Período", materia: "Metodologia da Pesquisa Arquivística", dia: "Sexta-feira", professor: "Priscila Gomes", email: "priscila.gomes@unirio.br", tipo: "Obrigatória", sala: "CCH-313", horario: "18:00 - 22:00" },
         
         // SEGUNDO PERÍODO
-        { periodo: "2º Período", materia: "Introdução à Sociologia", dia: "Segunda-feira", professor: "Terezinha Souza", sala: "CCH-212", horario: "18:00 - 22:00" },
-        { periodo: "2º Período", materia: "Informação, Memória e Documento", dia: "Segunda-feira", professor: "Bianca Rihan", sala: "PPGMS1", horario: "18:00 - 21:00" },
-        { periodo: "2º Período", materia: "Administração I", dia: "Terça-feira", professor: "Ricardo Bezerra", sala: "CCH-315", horario: "18:00 - 22:00" },
-        { periodo: "2º Período", materia: "Arquivologia e Ciência da Informação", dia: "Terça-feira", professor: "Rosale de Mattos", sala: "ENF-302", horario: "18:00 - 22:00" },
-        { periodo: "2º Período", materia: "Usos e Usuários da Informação Arquivística", dia: "Quarta-feira", professor: "Renato Crivelli", sala: "ENF-307", horario: "18:00 - 22:00" },
-        { periodo: "2º Período", materia: "Metodologia Científica", dia: "Quinta-feira", professor: "Sérgio Silva", sala: "CCH-212", horario: "18:00 - 22:00" },
-        { periodo: "2º Período", materia: "Gestão da Informação Arquivística", dia: "Quinta-feira", professor: "Marcelo Siqueira", sala: "CCH-204", horario: "18:00 - 22:00" },
-        { periodo: "2º Período", materia: "Organização do Conhecimento I", dia: "Sexta-feira", professor: "Tatiana de Almeida", sala: "RU-302", horario: "18:00 - 22:00" },
+        { periodo: "2º Período", materia: "Introdução à Sociologia", dia: "Segunda-feira", professor: "Terezinha Souza", email: "terezinha.souza@unirio.br", tipo: "Optativa", sala: "CCH-212", horario: "18:00 - 22:00" },
+        { periodo: "2º Período", materia: "Informação, Memória e Documento", dia: "Segunda-feira", professor: "Bianca Rihan", email: "bianca.rihan@unirio.br", tipo: "Optativa", sala: "PPGMS1", horario: "18:00 - 21:00" },
+        { periodo: "2º Período", materia: "Administração I", dia: "Terça-feira", professor: "Ricardo Bezerra", email: "rbezerra@unirio.br", tipo: "Optativa", sala: "CCH-315", horario: "18:00 - 22:00" },
+        { periodo: "2º Período", materia: "Arquivologia e Ciência da Informação", dia: "Terça-feira", professor: "Rosale de Mattos", email: "rosale.m.souza@unirio.br", tipo: "Optativa", sala: "ENF-302", horario: "18:00 - 22:00" },
+        { periodo: "2º Período", materia: "Usos e Usuários da Informação Arquivística", dia: "Quarta-feira", professor: "Renato Crivelli", email: "renato.duarte@unirio.br", tipo: "Optativa", sala: "ENF-307", horario: "18:00 - 22:00" },
+        { periodo: "2º Período", materia: "Metodologia Científica", dia: "Quinta-feira", professor: "Sérgio Silva", email: "sergio.l.silva@unirio.br", tipo: "Optativa", sala: "CCH-212", horario: "18:00 - 22:00" },
+        { periodo: "2º Período", materia: "Gestão da Informação Arquivística", dia: "Quinta-feira", professor: "Marcelo Siqueira", email: "marcelo.siqueira@unirio.br", tipo: "Obrigatória", sala: "CCH-204", horario: "18:00 - 22:00" },
+        { periodo: "2º Período", materia: "Organização do Conhecimento I", dia: "Sexta-feira", professor: "Tatiana de Almeida", email: "thaislamas@unirio.br", tipo: "Optativa", sala: "RU-302", horario: "18:00 - 22:00" },
 
         // TERCEIRO PERÍODO
-        { periodo: "3º Período", materia: "Avaliação de Documentos Arquivísticos", dia: "Segunda-feira", professor: "Mariana Lousada", sala: "ENF-404", horario: "18:00 - 22:00" },
-        { periodo: "3º Período", materia: "Seminário de Arquivística I C (Arquivos Fluminenses)", dia: "Terça-feira", professor: "Eliezer Pires", sala: "PET-3º ANDAR/CCH", horario: "18:00 - 20:00" },
-        { periodo: "3º Período", materia: "Seminário de Arquivística II C (Instrumentos de Pesquisa)", dia: "Terça-feira", professor: "Eliezer Pires", sala: "PET-3º ANDAR/CCH", horario: "20:00 - 22:00" },
-        { periodo: "3º Período", materia: "Classificação de Documentos Arquivísticos", dia: "Terça-feira", professor: "Fernanda Monteiro", sala: "RU-307", horario: "18:00 - 22:00" },
-        { periodo: "3º Período", materia: "Seminário de Arquivística IA (Introdução Arquivos e Educação)", dia: "Quinta-feira", professor: "Priscila Gomes", sala: "CCH-213", horario: "18:00 - 20:00" },
-        { periodo: "3º Período", materia: "Seminário de Arquivística II A (Arquivos Escolares)", dia: "Quinta-feira", professor: "Priscila Gomes", sala: "CCH-213", horario: "20:00 - 22:00" },
+        { periodo: "3º Período", materia: "Avaliação de Documentos Arquivísticos", dia: "Segunda-feira", professor: "Mariana Lousada", email: "mariana.lousada@unirio.br", tipo: "Obrigatória", sala: "ENF-404", horario: "18:00 - 22:00" },
+        { periodo: "3º Período", materia: "Seminário de Arquivística I C (Arquivos Fluminenses)", dia: "Terça-feira", professor: "Eliezer Pires", email: "eliezer.silva@unirio.br", tipo: "Optativa", sala: "PET-3º ANDAR/CCH", horario: "18:00 - 20:00" },
+        { periodo: "3º Período", materia: "Seminário de Arquivística II C (Instrumentos de Pesquisa)", dia: "Terça-feira", professor: "Eliezer Pires", email: "eliezer.silva@unirio.br", tipo: "Optativa", sala: "PET-3º ANDAR/CCH", horario: "20:00 - 22:00" },
+        { periodo: "3º Período", materia: "Classificação de Documentos Arquivísticos", dia: "Terça-feira", professor: "Fernanda Monteiro", email: "fernanda.c.araujo@unirio.br", tipo: "Obrigatória", sala: "RU-307", horario: "18:00 - 22:00" },
+        { periodo: "3º Período", materia: "Seminário de Arquivística IA (Introdução Arquivos e Educação)", dia: "Quinta-feira", professor: "Priscila Gomes", email: "priscila.gomes@unirio.br", tipo: "Optativa", sala: "CCH-213", horario: "18:00 - 20:00" },
+        { periodo: "3º Período", materia: "Seminário de Arquivística II A (Arquivos Escolares)", dia: "Quinta-feira", professor: "Priscila Gomes", email: "priscila.gomes@unirio.br", tipo: "Optativa", sala: "CCH-213", horario: "20:00 - 22:00" },
 
         // QUARTO PERÍODO
-        { periodo: "4º Período", materia: "Arranjo e Descrição de Documentos", dia: "Segunda-feira", professor: "Jair Martins", sala: "CCH-312", horario: "18:00 - 22:00" },
-        { periodo: "4º Período", materia: "Diplomática", dia: "Terça-feira", professor: "Danilo Bueno", sala: "CCH-314", horario: "18:00 - 22:00" },
-        { periodo: "4º Período", materia: "Gestão de Processos", dia: "Quarta-feira", professor: "Antonio Andrade", sala: "PJA-203", horario: "18:00 - 22:00" },
-        { periodo: "4º Período", materia: "Análise da Informação", dia: "Quarta-feira", professor: "Geni Chaves", sala: "CCH-213", horario: "18:00 - 22:00" },
-        { periodo: "4º Período", materia: "Tecnol de Reprodução e Armazenamento de Docs.", dia: "Quarta-feira", professor: "Durval Pereira", sala: "CCH-204", horario: "18:00 - 22:00" },
-        { periodo: "4º Período", materia: "Administração II", dia: "Quinta-feira", professor: "Ricardo Bezerra", sala: "ENF-410", horario: "18:00 - 22:00" },
-        { periodo: "4º Período", materia: "Conservação Preventiva de Documentos", dia: "Quinta-feira", professor: "Bruno Leite", sala: "PDA", horario: "18:00 - 22:00" },
-        { periodo: "4º Período", materia: "Arquivos Médicos", dia: "Sexta-feira", professor: "Brenda Rocco", sala: "ENF-302", horario: "18:00 - 22:00" },
-        { periodo: "4º Período", materia: "Estágio Supervisionado I", dia: "Sexta-feira", professor: "Fernanda Monteiro", sala: "REMOTA", horario: "17:00 - 18:00" },
+        { periodo: "4º Período", materia: "Arranjo e Descrição de Documentos", dia: "Segunda-feira", professor: "Jair Martins", email: "jairmm@unirio.br", tipo: "Obrigatória", sala: "CCH-312", horario: "18:00 - 22:00" },
+        { periodo: "4º Período", materia: "Diplomática", dia: "Terça-feira", professor: "Danilo Bueno", email: "danilo.bueno@unirio.br", tipo: "Obrigatória", sala: "CCH-314", horario: "18:00 - 22:00" },
+        { periodo: "4º Período", materia: "Gestão de Processos", dia: "Quarta-feira", professor: "Antonio Andrade", email: "antonio.andrade@unirio.br", tipo: "Optativa", sala: "PJA-203", horario: "18:00 - 22:00" },
+        { periodo: "4º Período", materia: "Análise da Informação", dia: "Quarta-feira", professor: "Geni Chaves", email: "geni.fernandes@unirio.br", tipo: "Optativa", sala: "CCH-213", horario: "18:00 - 22:00" },
+        { periodo: "4º Período", materia: "Tecnol de Reprodução e Armazenamento de Docs.", dia: "Quarta-feira", professor: "Durval Pereira", email: "durval.pereira@unirio.br", tipo: "Optativa", sala: "CCH-204", horario: "18:00 - 22:00" },
+        { periodo: "4º Período", materia: "Administração II", dia: "Quinta-feira", professor: "Ricardo Bezerra", email: "rbezerra@unirio.br", tipo: "Optativa", sala: "ENF-410", horario: "18:00 - 22:00" },
+        { periodo: "4º Período", materia: "Conservação Preventiva de Documentos", dia: "Quinta-feira", professor: "Bruno Leite", email: "bruno.leite@unirio.br", tipo: "Obrigatória", sala: "PDA", horario: "18:00 - 22:00" },
+        { periodo: "4º Período", materia: "Arquivos Médicos", dia: "Sexta-feira", professor: "Brenda Rocco", email: "brenda.rocco@unirio.br", tipo: "Optativa", sala: "ENF-302", horario: "18:00 - 22:00" },
+        { periodo: "4º Período", materia: "Estágio Supervisionado I", dia: "Sexta-feira", professor: "Fernanda Monteiro", email: "fernanda.c.araujo@unirio.br", tipo: "Obrigatória", sala: "REMOTA", horario: "17:00 - 18:00" },
 
         // QUINTO PERÍODO
-        { periodo: "5º Período", materia: "Informática Aplica à Arquivística", dia: "Segunda-feira", professor: "Brenda Rocco", sala: "PDA", horario: "18:00 - 22:00" },
-        { periodo: "5º Período", materia: "Pesquisa em Arquivística", dia: "Terça-feira", professor: "Bruno Leite", sala: "PDA", horario: "18:00 - 22:00" },
-        { periodo: "5º Período", materia: "História do Brasil Contemporâneo", dia: "Quarta-feira", professor: "Maria Pires", sala: "CCH-307", horario: "18:00 - 22:00" },
-        { periodo: "5º Período", materia: "Fundamentos de Inglês Instrumental", dia: "Sexta-feira", professor: "Marcello Pinto", sala: "CCH-205", horario: "18:00 - 22:00" },
-        { periodo: "5º Período", materia: "Estágio Supervisionado II", dia: "Sexta-feira", professor: "Flávio Leal", sala: "REMOTA", horario: "17:00 - 18:00" },
+        { periodo: "5º Período", materia: "Informática Aplica à Arquivística", dia: "Segunda-feira", professor: "Brenda Rocco", email: "brenda.rocco@unirio.br", tipo: "Optativa", sala: "PDA", horario: "18:00 - 22:00" },
+        { periodo: "5º Período", materia: "Pesquisa em Arquivística", dia: "Terça-feira", professor: "Bruno Leite", email: "bruno.leite@unirio.br", tipo: "Obrigatória", sala: "PDA", horario: "18:00 - 22:00" },
+        { periodo: "5º Período", materia: "História do Brasil Contemporâneo", dia: "Quarta-feira", professor: "Maria Pires", email: "mariac.pires@unirio.br", tipo: "Optativa", sala: "CCH-307", horario: "18:00 - 22:00" },
+        { periodo: "5º Período", materia: "Fundamentos de Inglês Instrumental", dia: "Sexta-feira", professor: "Marcello Pinto", email: "marcello.pinto@unirio.br", tipo: "Optativa", sala: "CCH-205", horario: "18:00 - 22:00" },
+        { periodo: "5º Período", materia: "Estágio Supervisionado II", dia: "Sexta-feira", professor: "Flávio Leal", email: "fleal@unirio.br", tipo: "Obrigatória", sala: "REMOTA", horario: "17:00 - 18:00" },
 
         // SEXTO PERÍODO
-        { periodo: "6º Período", materia: "Gestão de Documentos Arquivísticos", dia: "Segunda-feira", professor: "Danilo Bueno", sala: "CCH-202", horario: "18:00 - 22:00" },
-        { periodo: "6º Período", materia: "Comunicação", dia: "Terça-feira", professor: "Luciana Souza", sala: "CCH-211", horario: "18:00 - 22:00" },
-        { periodo: "6º Período", materia: "Gestão Arquivística de Documentos Eletrônicos", dia: "Terça-feira", professor: "Brenda Rocco", sala: "REMOTA", horario: "18:00 - 22:00" },
-        { periodo: "6º Período", materia: "Documentação Audiovisual e Digital", dia: "Quarta-feira", professor: "Marcelo Siqueira", sala: "PDA", horario: "18:00 - 22:00" },
-        { periodo: "6º Período", materia: "Trabalho de Conclusão de Curso I", dia: "Quarta-feira", professor: "João Marcus", sala: "RU-305", horario: "18:00 - 22:00" },
-        { periodo: "6º Período", materia: "Tecnologia da Informação e Processos de Automação", dia: "Quinta-feira", professor: "Claudio Ribeiro", sala: "LADOC", horario: "18:00 - 22:00" },
-        { periodo: "6º Período", materia: "Estágio Supervisionado III", dia: "Sexta-feira", professor: "Renato Crivelli", sala: "REMOTA", horario: "17:00 - 18:00" },
+        { periodo: "6º Período", materia: "Gestão de Documentos Arquivísticos", dia: "Segunda-feira", professor: "Danilo Bueno", email: "danilo.bueno@unirio.br", tipo: "Obrigatória", sala: "CCH-202", horario: "18:00 - 22:00" },
+        { periodo: "6º Período", materia: "Comunicação", dia: "Terça-feira", professor: "Luciana Souza", email: "luciana.a.souza@unirio.br", tipo: "Optativa", sala: "CCH-211", horario: "18:00 - 22:00" },
+        { periodo: "6º Período", materia: "Gestão Arquivística de Documentos Eletrônicos", dia: "Terça-feira", professor: "Brenda Rocco", email: "brenda.rocco@unirio.br", tipo: "Optativa", sala: "REMOTA", horario: "18:00 - 22:00" },
+        { periodo: "6º Período", materia: "Documentação Audiovisual e Digital", dia: "Quarta-feira", professor: "Marcelo Siqueira", email: "marcelo.siqueira@unirio.br", tipo: "Optativa", sala: "PDA", horario: "18:00 - 22:00" },
+        { periodo: "6º Período", materia: "Trabalho de Conclusão de Curso I", dia: "Quarta-feira", professor: "João Marcus", email: "joao.m.assis@unirio.br", tipo: "Obrigatória", sala: "RU-305", horario: "18:00 - 22:00" },
+        { periodo: "6º Período", materia: "Tecnologia da Informação e Processos de Automação", dia: "Quinta-feira", professor: "Claudio Ribeiro", email: "claudio.ribeiro@unirio.br", tipo: "Optativa", sala: "LADOC", horario: "18:00 - 22:00" },
+        { periodo: "6º Período", materia: "Estágio Supervisionado III", dia: "Sexta-feira", professor: "Renato Crivelli", email: "renato.duarte@unirio.br", tipo: "Obrigatória", sala: "REMOTA", horario: "17:00 - 18:00" },
 
         // SÉTIMO PERÍODO
-        { periodo: "7º Período", materia: "Técnicas de Recuperação e Disseminação da Informação", dia: "Segunda-feira", professor: "Simone Alencar", sala: "CCH-213", horario: "18:00 - 22:00" },
-        { periodo: "7º Período", materia: "Organização Prática de Arquivos-A", dia: "Terça-feira", professor: "Jair Martins", sala: "ENF-410", horario: "18:00 - 22:00" },
-        { periodo: "7º Período", materia: "Gestão de Serviços Arquivísticos", dia: "Quinta-feira", professor: "Fernanda Monteiro", sala: "CCH-308", horario: "18:00 - 22:00" },
-        { periodo: "7º Período", materia: "Trabalho de Conclusão de Curso II", dia: "Sexta-feira", professor: "Igor Gak", sala: "REMOTA", horario: "16:00 - 17:00" },
+        { periodo: "7º Período", materia: "Técnicas de Recuperação e Disseminação da Informação", dia: "Segunda-feira", professor: "Simone Alencar", email: "simone.alencar@unirio.br", tipo: "Optativa", sala: "CCH-213", horario: "18:00 - 22:00" },
+        { periodo: "7º Período", materia: "Organização Prática de Arquivos-A", dia: "Terça-feira", professor: "Jair Martins", email: "jairmm@unirio.br", tipo: "Obrigatória", sala: "ENF-410", horario: "18:00 - 22:00" },
+        { periodo: "7º Período", materia: "Gestão de Serviços Arquivísticos", dia: "Quinta-feira", professor: "Fernanda Monteiro", email: "fernanda.c.araujo@unirio.br", tipo: "Obrigatória", sala: "CCH-308", horario: "18:00 - 22:00" },
+        { periodo: "7º Período", materia: "Trabalho de Conclusão de Curso II", dia: "Sexta-feira", professor: "Igor Gak", email: "igor.gak@unirio.br", tipo: "Obrigatória", sala: "REMOTA", horario: "16:00 - 17:00" },
 
         // OITAVO PERÍODO
-        { periodo: "8º Período", materia: "Educação Ambiental e Cidadania", dia: "Terça-feira", professor: "Ana Cláudia Delciellos", sala: "202N", horario: "18:00 - 21:00" },
-        { periodo: "8º Período", materia: "Gestão de Instituições Arquivísticas", dia: "Quinta-feira", professor: "Renato Crivelli", sala: "ARQUIVO CENTRAL", horario: "18:00 - 22:00" },
-        { periodo: "8º Período", materia: "Políticas de Acesso à Informação Arquivística", dia: "Sexta-feira", professor: "Rosale de Mattos", sala: "CCH-203", horario: "18:00 - 22:00" }
+        { periodo: "8º Período", materia: "Educação Ambiental e Cidadania", dia: "Terça-feira", professor: "Ana Cláudia Delciellos", email: "ana.delciellos@unirio.br", tipo: "Optativa", sala: "202N", horario: "18:00 - 21:00" },
+        { periodo: "8º Período", materia: "Gestão de Instituições Arquivísticas", dia: "Quinta-feira", professor: "Renato Crivelli", email: "renato.duarte@unirio.br", tipo: "Optativa", sala: "ARQUIVO CENTRAL", horario: "18:00 - 22:00" },
+        { periodo: "8º Período", materia: "Políticas de Acesso à Informação Arquivística", dia: "Sexta-feira", professor: "Rosale de Mattos", email: "rosale.m.souza@unirio.br", tipo: "Optativa", sala: "CCH-203", horario: "18:00 - 22:00" }
     ];
 
     const ordemDias = {
@@ -338,17 +379,14 @@
         const container = document.getElementById('resultados');
         container.innerHTML = '';
 
-        // Agrupar por período
         const agrupadoPorPeriodo = dados.reduce((acc, curr) => {
             if (!acc[curr.periodo]) acc[curr.periodo] = [];
             acc[curr.periodo].push(curr);
             return acc;
         }, {});
 
-        // Gerar HTML iterando sobre os períodos e dias
         for (const [periodo, materias] of Object.entries(agrupadoPorPeriodo)) {
             
-            // Agrupar e ordenar por dia da semana dentro do período
             const agrupadoPorDia = materias.reduce((acc, curr) => {
                 if (!acc[curr.dia]) acc[curr.dia] = [];
                 acc[curr.dia].push(curr);
@@ -365,10 +403,16 @@
                                     <div class="dia-title">${dia}</div>`;
                 
                 agrupadoPorDia[dia].forEach(item => {
+                    const classeBadge = item.tipo === "Obrigatória" ? "badge-obrigatoria" : "badge-optativa";
+                    
                     htmlPeriodo += `
                         <div class="card">
-                            <strong>${item.materia}</strong>
+                            <div class="card-header">
+                                <strong>${item.materia}</strong>
+                                <span class="badge ${classeBadge}">${item.tipo}</span>
+                            </div>
                             <span>🎓 Professor(a): ${item.professor}</span>
+                            <span>📧 E-mail: <a href="mailto:${item.email}" title="Enviar e-mail">${item.email}</a></span>
                             <span>⏰ Horário: ${item.horario}</span>
                             <span>📍 Sala: <span class="sala-destaque">${item.sala}</span></span>
                         </div>
@@ -387,7 +431,6 @@
         const termoProfessor = normalizarTexto(document.getElementById('buscaProfessor').value);
         const container = document.getElementById('resultados');
 
-        // Se ambos os campos estiverem vazios, mostra mensagem inicial e interrompe
         if (termoMateria === "" && termoProfessor === "") {
             container.innerHTML = '<div class="message-box info">Digite o nome da disciplina ou professor(a) acima para visualizar as salas.</div>';
             return;
@@ -399,7 +442,6 @@
             return matchMateria && matchProfessor;
         });
 
-        // Se buscou algo mas não encontrou nada
         if (resultadosFiltrados.length === 0) {
             container.innerHTML = '<div class="message-box error">Nenhuma disciplina ou sala encontrada. Tente revisar os termos informados.</div>';
             return;
@@ -409,18 +451,12 @@
     }
 
     function limparBusca() {
-        // Limpa os valores dos inputs
         document.getElementById('buscaMateria').value = '';
         document.getElementById('buscaProfessor').value = '';
-        
-        // Chama a função de filtro para restaurar a tela inicial
         filtrarSalas();
-        
-        // Retorna o foco para o primeiro input
         document.getElementById('buscaMateria').focus();
     }
 
-    // Chama a função logo que a página carrega para exibir o estado inicial
     filtrarSalas();
 
 </script>
