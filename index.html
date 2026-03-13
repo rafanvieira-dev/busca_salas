@@ -24,14 +24,25 @@
             min-height: 100vh;
         }
 
-        /* Cabeçalho */
+        /* Cabeçalho estilo portal institucional */
         header {
             background-color: var(--unirio-blue);
             color: white;
-            padding: 20px 0;
+            padding: 20px 20px;
             border-bottom: 5px solid var(--unirio-gold);
             text-align: center;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo-unirio {
+            max-width: 120px;
+            margin-bottom: 15px;
+            background-color: white;
+            padding: 10px;
+            border-radius: 8px;
         }
 
         header h1 {
@@ -275,6 +286,7 @@
 <body>
 
 <header>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Logo_UNIRIO.png/320px-Logo_UNIRIO.png" alt="Logo UNIRIO" class="logo-unirio">
     <h1>Universidade Federal do Estado do Rio de Janeiro</h1>
     <p>Localizador de Salas - Arquivologia 2026.1</p>
 </header>
