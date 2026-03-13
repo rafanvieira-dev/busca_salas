@@ -38,12 +38,13 @@
         }
 
         .logo-unirio {
-            max-width: 180px; /* Aumentamos de 120px para 180px para ficar maior */
+            max-width: 180px; /* Deixa a logo maior */
             margin-bottom: 15px;
-            border: 4px solid #ffffff; /* Cria a borda branca com 4 pixels de espessura */
-            border-radius: 10px; /* Deixa os cantos da borda levemente arredondados */
-            padding: 8px; /* Dá um respiro (espaço) entre a borda e a imagem */
-            background-color: #ffffff; /* Fundo branco dentro da moldura para a logo destacar bem no azul */
+            /* Isso cria uma linha branca exata ao redor do formato do desenho, sem fundo! */
+            filter: drop-shadow(2px 2px 0px white) 
+                    drop-shadow(-2px -2px 0px white) 
+                    drop-shadow(2px -2px 0px white) 
+                    drop-shadow(-2px 2px 0px white);
         }
 
         header h1 {
